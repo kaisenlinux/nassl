@@ -1,0 +1,5 @@
+nassl (4.0.0-1kaisen1) kaisen-testing; urgency=medium
+
+  * First packaging for Kaisen Linux (needed by sslyse)
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Thu, 25 Mar 2021 20:27:36 +0200
