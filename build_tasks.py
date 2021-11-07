@@ -35,6 +35,8 @@ class SupportedPlatformEnum(Enum):
     WINDOWS_64 = 5
     OPENBSD_64 = 6
     OSX_ARM64 = 7
+    LINUX_ARM64 = 8
+    LINUX_ARM32 = 9
 
 
 CURRENT_PLATFORM = None
@@ -45,14 +47,20 @@ if architecture()[0] == "64bit":
         else:
             CURRENT_PLATFORM = SupportedPlatformEnum.OSX_ARM64
     elif platform in ["linux", "linux2"]:
-        CURRENT_PLATFORM = SupportedPlatformEnum.LINUX_64
+        if machine() == "aarch64":
+            CURRENT_PLATFORM = SupportedPlatformEnum.LINUX_ARM64
+        else:
+            CURRENT_PLATFORM = SupportedPlatformEnum.LINUX_64
     elif platform == "win32":
         CURRENT_PLATFORM = SupportedPlatformEnum.WINDOWS_64
     elif platform == "openbsd5":
         CURRENT_PLATFORM = SupportedPlatformEnum.OPENBSD_64
 elif architecture()[0] == "32bit":
     if platform in ["linux", "linux2"]:
-        CURRENT_PLATFORM = SupportedPlatformEnum.LINUX_32
+        if machine() == "armv7l":
+            CURRENT_PLATFORM = SupportedPlatformEnum.LINUX_ARM32
+        else:
+            CURRENT_PLATFORM = SupportedPlatformEnum.LINUX_32
     elif platform == "win32":
         CURRENT_PLATFORM = SupportedPlatformEnum.WINDOWS_32
 
@@ -144,6 +152,10 @@ class OpenSslBuildConfig(BuildConfig, ABC):
             openssl_target = "linux-x86_64"
         elif self.platform == SupportedPlatformEnum.LINUX_32:
             openssl_target = "linux-elf"
+        elif self.platform == SupportedPlatformEnum.LINUX_ARM64:
+            openssl_target = "linux-aarch64"
+        elif self.platform == SupportedPlatformEnum.LINUX_ARM32:
+            openssl_target = "linux-armv4"
         else:
             raise ValueError("Unknown platform")
 
