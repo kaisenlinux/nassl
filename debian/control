@@ -10,17 +10,18 @@ Build-Depends: ca-certificates,
 	       python3-pytest,
                python3-requests,
                python3-setuptools,
+	       python3-invoke,
                wget,
 	       mypy,
 	       flake8,
-Standards-Version: 4.5.1
+Standards-Version: 4.6.0
 Homepage: https://github.com/nabla-c0d3/nassl
 Vcs-Git: https://gitlab.com/kaisenlinux/packages/nassl.git
 Vcs-Browser: https://gitlab.com/kaisenlinux/packages/nassl
 
 Package: python3-nassl
 Architecture: amd64 i386 arm64
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${python3:Depends}
 Description: Experimental OpenSSL wrapper for Python 3
  Experimental Python wrapper for OpenSSL. Do NOT use for anything serious. This
  code has not been properly tested/reviewed and is absolutely not production

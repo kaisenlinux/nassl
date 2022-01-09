@@ -1,3 +1,11 @@
+nassl (4.0.2-1kaisen) kaisen-packages; urgency=medium
+
+  * Import 4.0.2 version
+  * Add python3-invoke as dependancy to build
+  * Bump Standards-Version
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Sun, 09 Jan 2022 03:44:24 +0200
+
 nassl (4.0.1-1kaisen) kaisen-packages; urgency=medium
 
   * Import 4.0.1 version

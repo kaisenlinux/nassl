@@ -62,26 +62,6 @@ _OPENSSL_EVP_PKEY_TO_NAME_MAPPING: Dict[OpenSslEvpPkeyEnum, str] = {
 }
 
 
-# Mapping between the OpenSSL NID_XXX value and NIST name defined in https://tools.ietf.org/html/rfc4492
-_OPENSSL_NID_TO_NIST_MAPPING: Dict[OpenSslEcNidEnum, str] = {
-    OpenSslEcNidEnum.SECT163R2: "B-163",
-    OpenSslEcNidEnum.SECT233R1: "B-233",
-    OpenSslEcNidEnum.SECT283R1: "B-283",
-    OpenSslEcNidEnum.SECT409R1: "B-409",
-    OpenSslEcNidEnum.SECT571R1: "B-571",
-    OpenSslEcNidEnum.SECT163K1: "K-163",
-    OpenSslEcNidEnum.SECT233K1: "K-233",
-    OpenSslEcNidEnum.SECT283K1: "K-283",
-    OpenSslEcNidEnum.SECT409K1: "K-409",
-    OpenSslEcNidEnum.SECT571K1: "K-571",
-    OpenSslEcNidEnum.PRIME192V1: "P-192",
-    OpenSslEcNidEnum.SECP224R1: "P-224",
-    OpenSslEcNidEnum.PRIME256V1: "P-256",
-    OpenSslEcNidEnum.SECP384R1: "P-384",
-    OpenSslEcNidEnum.SECP521R1: "P-521",
-}
-
-
 # Mapping between the OpenSSL NID_XXX value and the SECG or ANSI X9.62 name (https://tools.ietf.org/html/rfc4492)
 # Where a ANSI X9.62 name is available, this is used in preference to the SECG
 # X25519 and X448 also included from https://tools.ietf.org/html/rfc8422
@@ -137,8 +117,13 @@ class EcDhEphemeralKeyInfo(EphemeralKeyInfo):
 
     def __post_init__(self) -> None:
         super().__post_init__()
+        try:
+            curve_name = _OPENSSL_NID_TO_SECG_ANSI_X9_62[self.curve]
+        except KeyError:
+            curve_name = f"unknown-curve-with-openssl-id-{self.curve.value}"
+
         # Required because of frozen=True; https://docs.python.org/3/library/dataclasses.html#frozen-instances
-        object.__setattr__(self, "curve_name", _OPENSSL_NID_TO_SECG_ANSI_X9_62[self.curve])
+        object.__setattr__(self, "curve_name", curve_name)
 
 
 @dataclass(frozen=True)
