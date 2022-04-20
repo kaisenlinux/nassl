@@ -21,7 +21,9 @@ Vcs-Browser: https://gitlab.com/kaisenlinux/packages/nassl
 
 Package: python3-nassl
 Architecture: amd64 i386 arm64
-Depends: ${misc:Depends}, ${python3:Depends}
+Depends: python3,
+	 ${shlibs:Depends},
+	 ${misc:Depends},
 Description: Experimental OpenSSL wrapper for Python 3
  Experimental Python wrapper for OpenSSL. Do NOT use for anything serious. This
  code has not been properly tested/reviewed and is absolutely not production

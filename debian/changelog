@@ -1,3 +1,9 @@
+nassl (4.0.2-2kaisen) kaisen-packages; urgency=medium
+
+  * Rebuild to Python 3.10 (add zlib version patch)
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Wed, 20 Apr 2022 02:34:07 +0100
+
 nassl (4.0.2-1kaisen) kaisen-packages; urgency=medium
 
   * Import 4.0.2 version
