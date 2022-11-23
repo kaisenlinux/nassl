@@ -1,3 +1,10 @@
+nassl (5.0.0-1kaisen) kaisen-packages; urgency=medium
+
+  * Import the 5.0.0 version
+  * Remove the zlib patch
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Wed, 23 Nov 2022 17:58:17 +0100
+
 nassl (4.0.2-2kaisen) kaisen-packages; urgency=medium
 
   * Rebuild to Python 3.10 (add zlib version patch)

@@ -1,2 +1,1 @@
 000-compilation-with-python3.patch
-zlib-1.2.12-to-fix-build-with-python3.10

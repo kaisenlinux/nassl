@@ -9,6 +9,13 @@ from sys import platform
 from typing import Optional, Any
 from urllib.request import urlopen
 
+# Monkeypatch for Python 3.11
+# TODO: Remove after this is fixed: https://github.com/pyinvoke/invoke/issues/833
+import inspect
+
+if not hasattr(inspect, "getargspec"):
+    inspect.getargspec = inspect.getfullargspec
+
 try:
     from invoke import task, Context
 except ImportError:
@@ -270,7 +277,7 @@ class LegacyOpenSslBuildConfig(OpenSslBuildConfig):
 class ModernOpenSslBuildConfig(OpenSslBuildConfig):
     @property
     def _openssl_git_tag(self) -> str:
-        return "OpenSSL_1_1_1h"
+        return "OpenSSL_1_1_1s"
 
     _OPENSSL_CONF_CMD = (
         "perl Configure {target} zlib no-zlib-dynamic no-shared enable-rc5 enable-md2 enable-gost "
@@ -314,28 +321,29 @@ class ModernOpenSslBuildConfig(OpenSslBuildConfig):
 class ZlibBuildConfig(BuildConfig):
     @property
     def src_tar_gz_url(self) -> str:
-        return "https://zlib.net/zlib-1.2.11.tar.gz"
+        return "https://zlib.net/zlib-1.2.13.tar.gz"
 
     @property
     def src_path(self) -> Path:
-        return _DEPS_PATH / "zlib-1.2.11"
+        return _DEPS_PATH / "zlib-1.2.13"
 
     def build(self, ctx: Context) -> None:
         if self.platform in [SupportedPlatformEnum.WINDOWS_32, SupportedPlatformEnum.WINDOWS_64]:
             if self.platform == SupportedPlatformEnum.WINDOWS_32:
-                arch = "x86"
-                build_script = "bld_ml32.bat"
                 build_platform = "Win32"
             else:
-                arch = "x64"
-                build_script = "bld_ml64.bat"
                 build_platform = "x64"
 
-            masm_path = self.src_path / "contrib" / f"masm{arch}"
-            with ctx.cd(str(masm_path)):
-                ctx.run(build_script)
+            # Assuming default path for Visual Studio 2022
+            msbuild_path = Path(
+                "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\MSBuild\\Current\\Bin\\MSBuild.exe"
+            )
+            assert msbuild_path.exists()
+
+            vs_contrib_path = self.src_path / "contrib" / "vstudio"
+            with ctx.cd(str(vs_contrib_path)):
                 ctx.run(
-                    f"msbuild ..\\vstudio\\vc14\\zlibvc.sln /P:Configuration=Release /P:Platform={build_platform}"
+                    f'"{msbuild_path}" vc14\\zlibvc.sln /P:Configuration=Release /P:Platform={build_platform}'
                 )
 
         else:
