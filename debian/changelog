@@ -1,3 +1,9 @@
+nassl (5.3.0-1kaisen) kaisen-packages; urgency=medium
+
+  * Import the 5.3.0 release
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Tue, 14 Jan 2025 08:31:56 +0100
+
 nassl (5.2.0-1kaisen) kaisen-packages; urgency=medium
 
   * Import the 5.2.0 release
